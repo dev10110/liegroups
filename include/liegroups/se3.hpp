@@ -1,8 +1,8 @@
 #pragma once
 
+#include "so3.hpp"
 #include "types.hpp"
 #include "utils.hpp"
-#include "so3.hpp"
 
 // follows the notation in https://arxiv.org/pdf/1812.01537
 
@@ -13,9 +13,8 @@ Matrix4f Identity() { return Matrix4f::Identity(); }
 
 Matrix3f V(Vector3f thetau) {
   float theta = thetau.norm();
-  if (theta == 0)
-  {
-	  return Matrix3f::Identity();
+  if (theta == 0) {
+    return Matrix3f::Identity();
   }
 
   float a = (1 - std::cos(theta)) / (std::pow(theta, 2));
@@ -28,7 +27,6 @@ Matrix3f V(Vector3f thetau) {
 }
 
 Matrix4f Exp(Vector6f tau) {
-
   // extract
   Vector3f rho = tau.head(3);
   Vector3f thetau = tau.tail(3);

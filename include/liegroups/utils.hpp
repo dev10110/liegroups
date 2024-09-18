@@ -1,5 +1,5 @@
 #pragma once
-#include "types.hpp" 
+#include "types.hpp"
 
 // follows the notation in https://arxiv.org/pdf/1812.01537
 

@@ -13,9 +13,8 @@ Matrix3f Identity() { return Matrix3f::Identity(); }
 Matrix3f Exp(Vector3f tau) {
   float theta = tau.norm();
 
-  if (theta == 0)
-  {
-	  return Matrix3f::Identity();
+  if (theta == 0) {
+    return Matrix3f::Identity();
   }
 
   Vector3f u = tau / theta;
@@ -31,8 +30,8 @@ Matrix3f Exp(Vector3f tau) {
 Vector3f Log(Matrix3f R) {
   float theta = std::acos((R.trace() - 1) / 2);
 
-  if (theta == 0){
-	  return Vector3f::Zero();
+  if (theta == 0) {
+    return Vector3f::Zero();
   }
 
   return (theta / (2 * std::sin(theta))) * deskew(R - R.transpose());

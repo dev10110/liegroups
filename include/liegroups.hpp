@@ -6,10 +6,10 @@
 #include <vector>
 
 // follows the notation in https://arxiv.org/pdf/1812.01537
+#include "liegroups/se3.hpp"
+#include "liegroups/so3.hpp"
 #include "liegroups/types.hpp"
 #include "liegroups/utils.hpp"
-#include "liegroups/so3.hpp"
-#include "liegroups/se3.hpp"
 
 namespace LieGroups {
 
@@ -49,6 +49,5 @@ Vector6f Log(Matrix4f T);
 Vector3f action(Matrix4f T, Vector3f v);
 Vector4f action(Matrix4f T, Vector4f v);
 }  // namespace SE3
-
 
 }  // namespace LieGroups
