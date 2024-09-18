@@ -33,4 +33,9 @@ make
 ctest --output-on-failure
 ```
 
-
+## Notes
+There is a pre-commit hook to ensure that the code is properly formatted. Run
+```
+clang-format -i --verbose **/*.hpp **/*.cpp
+```
+to ensure formatting styles before committing. 
