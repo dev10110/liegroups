@@ -8,71 +8,80 @@
 
 namespace LieGroups {
 namespace SE3 {
+using namespace Eigen;
 
-Matrix4f Identity() { return Matrix4f::Identity(); }
+template <typename F>
+Matrix<F, 4, 4> Identity() {
+  return Matrix<F, 4, 4>::Identity();
+}
 
-Matrix3f V(Vector3f thetau) {
-  float theta = thetau.norm();
+template <typename F>
+Matrix<F, 3, 3> V(Vector<F, 3> thetau) {
+  F theta = thetau.norm();
   if (theta == 0) {
     return Matrix3f::Identity();
   }
 
-  float a = (1 - std::cos(theta)) / (std::pow(theta, 2));
-  float b = (theta - std::sin(theta)) / (std::pow(theta, 3));
+  F a = (1 - std::cos(theta)) / (std::pow(theta, 2));
+  F b = (theta - std::sin(theta)) / (std::pow(theta, 3));
 
-  Vector3f u = thetau / theta;
-  Matrix3f S = skew(thetau);
+  Vector<F, 3> u = thetau / theta;
+  Matrix<F, 3, 3> S = skew(thetau);
 
-  return Matrix3f::Identity() + a * S + b * S * S;
+  return Matrix<F, 3, 3>::Identity() + a * S + b * S * S;
 }
 
-Matrix4f Exp(Vector6f tau) {
+template <typename F>
+Matrix<F, 4, 4> Exp(Vector<F, 6> tau) {
   // extract
-  Vector3f rho = tau.head(3);
-  Vector3f thetau = tau.tail(3);
+  Vector<F, 3> rho = tau.head(3);
+  Vector<F, 3> thetau = tau.tail(3);
 
   // initialize
-  Matrix4f T = Matrix4f();
-  T.setIdentity();
+  Matrix<F, 4, 4> T = Matrix<F, 4, 4>::Identity();
 
   // update the blocks
-  T.block<3, 3>(0, 0) = SO3::Exp(thetau);
-  T.block<3, 1>(0, 3) = SE3::V(thetau) * rho;
+  T.block(0, 0, 3, 3) = SO3::Exp(thetau);
+  T.block(0, 3, 3, 1) = SE3::V(thetau) * rho;
 
   return T;
 }
 
-Vector6f Log(Matrix4f T) {
-  Matrix3f R = T.block<3, 3>(0, 0);
-  Vector3f t = T.block<3, 1>(0, 3);
+template <typename F>
+Vector<F, 6> Log(Matrix<F, 4, 4> T) {
+  Matrix<F, 3, 3> R = T.block(0, 0, 3, 3);
+  Vector<F, 3> t = T.block(0, 3, 3, 1);
 
-  Vector3f thetau = SO3::Log(R);
+  Vector<F, 3> thetau = SO3::Log(R);
 
-  Matrix3f Vtheta = SE3::V(thetau);
+  Matrix<F, 3, 3> Vtheta = SE3::V(thetau);
 
-  Vector3f rho = Vtheta.inverse() * t;
+  Vector<F, 3> rho = Vtheta.inverse() * t;
 
-  Vector6f tau;
+  Vector<F, 6> tau;
   tau.head(3) = rho;
   tau.tail(3) = thetau;
 
   return tau;
 }
 
-Vector3f action(Matrix4f T, Vector3f v) {
+template <typename F>
+Vector<F, 3> action(Matrix<F, 4, 4> T, Vector<F, 3> v) {
   // make homogeneous
-  Vector4f vh;
+  Vector<F, 4> vh;
   vh.head(3) = v;
   vh(3) = 1;
 
   // action
-  Vector4f qh = T * vh;
-  Vector3f q = qh.head(3);
+  Vector<F, 4> qh = T * vh;
 
-  return q;
+  return qh.head(3);
 }
 
-Vector4f action(Matrix4f T, Vector4f v) { return T * v; }
+template <typename F>
+Vector<F, 4> action(Matrix<F, 4, 4> T, Vector<F, 4> v) {
+  return T * v;
+}
 
 }  // namespace SE3
 

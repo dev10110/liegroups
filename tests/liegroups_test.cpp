@@ -25,13 +25,13 @@ TEST(LieGroupsTest, ExpZeroSE3) {
 
 // Log(Identity) == Zero
 TEST(LieGroupsTest, LogIdentity) {
-  Matrix3f R = SO3::Identity();
+  Matrix3f R = SO3::Identity<float>();
   Vector3f v = SO3::Log(R);
   EXPECT_EQ(v, Vector3f::Zero());
 }
 
 TEST(LieGroupsTest, LogIdentitySE3) {
-  Matrix4f T = SE3::Identity();
+  Matrix4f T = SE3::Identity<float>();
   Vector6f v = SE3::Log(T);
   EXPECT_EQ(v, Vector6f::Zero());
 }

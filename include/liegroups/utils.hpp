@@ -5,14 +5,18 @@
 
 namespace LieGroups {
 
-Matrix3f skew(Vector3f v) {
-  Matrix3f T;
+using namespace Eigen;
+
+template <typename F>
+Matrix<F, 3, 3> skew(Vector<F, 3> v) {
+  Matrix<F, 3, 3> T;
   T << 0, -v(2), v(1), v(2), 0, -v(0), -v(1), v(0), 0;
   return T;
 }
 
-Vector3f deskew(Matrix3f T) {
-  Vector3f v;
+template <typename F>
+Vector<F, 3> deskew(Matrix<F, 3, 3> T) {
+  Vector<F, 3> v;
   v << T(2, 1), T(0, 2), T(1, 0);
   return v;
 }
