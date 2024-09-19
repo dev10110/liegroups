@@ -33,6 +33,22 @@ make
 ctest --output-on-failure
 ```
 
+If the library is installed with the default directories, you can simply 
+```
+#include <liegroups/liegroups.hpp>
+```
+in any source file to start using this library. 
+You will also need to use Eigen, so in your `CMakeLists.txt` make sure you have
+```
+find_package(Eigen3 3.4 REQUIRED)
+
+...
+
+add_executable( ... )
+target_link_libraries( ...
+  Eigen3:Eigen
+)
+
 ## Notes
 There is a pre-commit hook to ensure that the code is properly formatted. Run
 ```

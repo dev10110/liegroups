@@ -8,16 +8,6 @@ int main(int argc, char** argv) {
 
   std::cout << "hello sophus lie" << std::endl;
 
-  std::cout << LieGroups::greet("dev") << std::endl;
-
-  Eigen::Vector3f x;
-  x << 1, 2, 3;
-
-  std::cout << "x : " << x.transpose() << std::endl;
-
-  Eigen::Vector3f y = LieGroups::times2(x);
-  std::cout << "y " << y.transpose() << std::endl;
-
   // if (0) {
   //   // create a transform
   //   auto T = LieGroups::Matrix4f();
