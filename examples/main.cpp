@@ -3,6 +3,14 @@
 #include <iostream>
 #include <liegroups/liegroups.hpp>
 
+template <typename F, int N>
+Eigen::Matrix<F, N, N> rand_pos_def() {
+  typedef Eigen::Matrix<F, N, N> Mat;
+  Mat A = Mat::Random();
+  Mat B = A * A.transpose() + Mat::Identity();
+  return B;
+}
+
 int main(int argc, char** argv) {
   srand(time(NULL));
 
@@ -38,13 +46,28 @@ int main(int argc, char** argv) {
   //   std::cout << "v   : " << v.transpose() << std::endl;
   // }
 
-  if (1) {
-    using namespace LieGroups;
-    Vector6f tau = 1e-2 * Vector6f::Random();
-    Matrix4f R = SE3::Exp(tau);
-    Vector6f v = SE3::Log(R);
+  // if (1) {
+  //   using namespace LieGroups;
+  //   Vector6f tau = 1e-2 * Vector6f::Random();
+  //   Matrix4f R = SE3::Exp(tau);
+  //   Vector6f v = SE3::Log(R);
 
-    std::cout << "tau : " << tau.transpose() << std::endl;
-    std::cout << "v   : " << v.transpose() << std::endl;
+  //   std::cout << "tau : " << tau.transpose() << std::endl;
+  //   std::cout << "v   : " << v.transpose() << std::endl;
+  // }
+
+  // construct a random symm. pos. def matrix
+  // LieGroups::Matrix6f A = LieGroups::Matrix6f::Random();
+  // std::cout << "A: " << A << std::endl;
+  //
+  LieGroups::Matrix6f A = rand_pos_def<float, 6>();
+  std::cout << "A: " << A << std::endl;
+
+  // get the cholesky decomposition
+  Eigen::LLT<LieGroups::Matrix6f> A_llt(A);
+  if (!A.isApprox(A.transpose()) || A_llt.info() == Eigen::NumericalIssue) {
+    throw std::runtime_error("Possibly non semi-positive definitie matrix!");
   }
+
+  std::cout << "all good..." << std::endl;
 }

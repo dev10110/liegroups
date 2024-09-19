@@ -18,5 +18,6 @@ typedef Eigen::Matrix<float, 6, 1> Vector6f;
 
 typedef Eigen::Matrix3f Matrix3f;
 typedef Eigen::Matrix4f Matrix4f;
+typedef Eigen::Matrix<float, 6, 6> Matrix6f;
 
 }  // namespace LieGroups

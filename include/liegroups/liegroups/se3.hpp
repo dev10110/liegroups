@@ -27,7 +27,6 @@ Matrix<F, 3, 3> V(Vector<F, 3> thetau) {
   F a = (1 - std::cos(theta)) / (std::pow(theta, 2));
   F b = (theta - std::sin(theta)) / (std::pow(theta, 3));
 
-  Vector<F, 3> u = thetau / theta;
   Matrix<F, 3, 3> S = skew(thetau);
 
   return Matrix<F, 3, 3>::Identity() + a * S + b * S * S;
