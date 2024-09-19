@@ -1,4 +1,6 @@
 #pragma once
+#include <Eigen/Core>
+#include <Eigen/Geometry>
 
 #include "types.hpp"
 #include "utils.hpp"

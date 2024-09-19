@@ -1,4 +1,6 @@
 #pragma once
+#include <Eigen/Core>
+#include <Eigen/Geometry>
 
 #include "so3.hpp"
 #include "types.hpp"

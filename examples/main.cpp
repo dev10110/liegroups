@@ -1,11 +1,22 @@
 #include <time.h>
+#include <Eigen/Core>
 #include <iostream>
-#include <liegroups.hpp>
+#include <liegroups/liegroups.hpp>
 
 int main(int argc, char** argv) {
   srand(time(NULL));
 
   std::cout << "hello sophus lie" << std::endl;
+
+  std::cout << LieGroups::greet("dev") << std::endl;
+
+  Eigen::Vector3f x;
+  x << 1, 2, 3;
+
+  std::cout << "x : " << x.transpose() << std::endl;
+
+  Eigen::Vector3f y = LieGroups::times2(x);
+  std::cout << "y " << y.transpose() << std::endl;
 
   // if (0) {
   //   // create a transform
@@ -27,15 +38,15 @@ int main(int argc, char** argv) {
   //   std::cout << "tau2: " << tau2.transpose() << std::endl;
   // }
 
-  if (0) {
-    using namespace LieGroups;
-    Vector3f tau = 1e-2 * Vector3f::Random();
-    Matrix3f R = SO3::Exp(tau);
-    Vector3f v = SO3::Log(R);
+  // if (0) {
+  //   using namespace LieGroups;
+  //   Vector3f tau = 1e-2 * Vector3f::Random();
+  //   Matrix3f R = SO3::Exp(tau);
+  //   Vector3f v = SO3::Log(R);
 
-    std::cout << "tau : " << tau.transpose() << std::endl;
-    std::cout << "v   : " << v.transpose() << std::endl;
-  }
+  //   std::cout << "tau : " << tau.transpose() << std::endl;
+  //   std::cout << "v   : " << v.transpose() << std::endl;
+  // }
 
   if (1) {
     using namespace LieGroups;

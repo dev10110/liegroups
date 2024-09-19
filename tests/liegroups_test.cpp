@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <iostream>
-#include <liegroups.hpp>
+#include <liegroups/liegroups.hpp>
 
 using namespace LieGroups;
 
