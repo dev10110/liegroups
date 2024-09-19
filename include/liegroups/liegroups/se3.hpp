@@ -69,15 +69,10 @@ Vector<F, 6> Log(Matrix<F, 4, 4> T) {
 
 template <typename F>
 Vector<F, 3> action(Matrix<F, 4, 4> T, Vector<F, 3> v) {
-  // make homogeneous
-  Vector<F, 4> vh;
-  vh.head(3) = v;
-  vh(3) = 1;
+  Matrix<F, 3, 3> R = T.block(0, 0, 3, 3);
+  Vector<F, 3> t = T.block(0, 3, 3, 1);
 
-  // action
-  Vector<F, 4> qh = T * vh;
-
-  return qh.head(3);
+  return R * v + t;
 }
 
 template <typename F>
