@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <iostream>
 #include <liegroups/liegroups.hpp>
+#include <unsupported/Eigen/MatrixFunctions>
 
 using namespace LieGroups;
 
@@ -57,5 +58,55 @@ TEST(LieGroupsTest, ExpLogSE3) {
     Vector6f tau = Vector6f::Random();
     Matrix4f T = SE3::Exp(tau);
     EXPECT_NEAR((SE3::Log(T) - tau).norm(), 0, 1e-6);
+  }
+}
+
+TEST(LieGroupsTest, HatVeeSO3) {
+  srand(0);
+  for (int i = 0; i < 100; ++i) {
+    Vector3f v = Vector3f::Random();
+    Matrix3f tau = SO3::hat(v);
+    Vector3f v2 = SO3::vee(tau);
+    EXPECT_NEAR((v2 - v).norm(), 0, 1e-6);
+  }
+}
+
+TEST(LieGroupsTest, HatVeeSE3) {
+  srand(0);
+  for (int i = 0; i < 100; ++i) {
+    Vector6f v = Vector6f::Random();
+    Matrix4f tau = SE3::hat(v);
+    Vector6f v2 = SE3::vee(tau);
+    EXPECT_NEAR((v2 - v).norm(), 0, 1e-6);
+  }
+}
+
+TEST(LieGroupsTest, ExpIsMatrixExpSO3) {
+  // use a fixed seed
+  srand(0);
+
+  for (int i = 0; i < 100; i++) {
+    Vector3f v = Vector3f::Random();
+    Matrix3f tau = SO3::hat(v);  // get the element of the lie algebra
+    Matrix3f T = SO3::Exp(v);
+
+    Matrix3f T2 = tau.exp();
+
+    EXPECT_NEAR((T2 - T).norm(), 0, 1e-6);
+  }
+}
+
+TEST(LieGroupsTest, ExpIsMatrixExpSE3) {
+  // use a fixed seed
+  srand(0);
+
+  for (int i = 0; i < 100; i++) {
+    Vector6f v = Vector6f::Random();
+    Matrix4f tau = SE3::hat(v);  // get the element of the lie algebra
+    Matrix4f T = SE3::Exp(v);
+
+    Matrix4f T2 = tau.exp();
+
+    EXPECT_NEAR((T2 - T).norm(), 0, 1e-6);
   }
 }

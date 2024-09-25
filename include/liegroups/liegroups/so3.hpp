@@ -18,6 +18,16 @@ Matrix<F, 3, 3> Identity() {
 }
 
 template <typename F>
+Matrix<F, 3, 3> hat(Vector<F, 3> v) {
+  return skew(v);
+}
+
+template <typename F>
+Vector<F, 3> vee(Matrix<F, 3, 3> tau) {
+  return deskew(tau);
+}
+
+template <typename F>
 Matrix<F, 3, 3> Exp(Eigen::Vector<F, 3> tau) {
   typedef Matrix<F, 3, 3> Matrix3;
 
