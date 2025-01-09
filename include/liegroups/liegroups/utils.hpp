@@ -86,4 +86,48 @@ Eigen::Vector<F, N> randn(const Eigen::Vector<F, N>& mu,
   return mu + randn(Sigma);
 }
 
+
+// @brief: user defined random seed
+
+template <typename F, int N>
+Eigen::Vector<F, N> randn(std::mt19937& gen) {
+  // create a standard normal distribution
+  std::normal_distribution<> dist(0.0, 1.0);
+
+  // sample zero-mean normal vector
+  Eigen::Vector<F, N> z;
+  for (int i = 0; i < N; ++i) {
+    z(i) = dist(gen);
+  }
+
+  return z;
+}
+
+template <typename F, int N>
+Eigen::Vector<F, N> randn(const Eigen::Matrix<F, N, N>& Sigma, std::mt19937& gen) {
+  typedef Eigen::Matrix<F, N, N> Mat;
+  typedef Eigen::Vector<F, N> Vec;
+
+  // check if the Sigma is essentially 0
+  if (Sigma.norm() <= 1e-10) {
+    return Vec::Zero();
+  }
+
+  // first check the sigma
+  Eigen::LLT<Mat> Sigma_llt(Sigma);
+  if (!Sigma.isApprox(Sigma.transpose()) ||
+      Sigma_llt.info() == Eigen::NumericalIssue) {
+    throw std::runtime_error("Possibly non semi-positive definitie matrix!");
+  }
+
+  // get unit random vector
+  Vec z = randn<F, N>(gen);
+
+  // apply transform
+  Vec x = Sigma_llt.matrixL() * z;
+
+  return x;
+}
+
+
 }  // namespace LieGroups
